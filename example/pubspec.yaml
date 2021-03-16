@@ -10,8 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^4.0.4
-  cupertino_icons: ^0.1.2
+  provider: ^5.0.0
+  cupertino_icons: ^1.0.2
   master_detail_scaffold:
     path: ../
 
