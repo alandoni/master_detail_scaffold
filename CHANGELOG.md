@@ -1,3 +1,7 @@
+## [2.0.0-nullsafety.0]
+
+* Null safety migration
+
 ## [1.1.1+2]
 
 * Minor updates to example app

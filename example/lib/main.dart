@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
                   builder: (context) => FloatingActionButton(
                     child: Icon(Icons.reply),
                     onPressed: () {
-                      Scaffold.of(context).showSnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Replying to ${_selectedItem.title}'),
                         ),
