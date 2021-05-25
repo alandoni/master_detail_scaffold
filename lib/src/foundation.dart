@@ -19,7 +19,7 @@ class MasterDetailRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   factory MasterDetailRouteObserver(
       {required String initialRoute,
       required String detailsRoute,
-      required DetailsPaneRouteChangedCallback onDetailsPaneRouteChanged}) {
+      required DetailsPaneRouteChangedCallback? onDetailsPaneRouteChanged}) {
     _initialRoute = initialRoute;
     _detailsRoute = detailsRoute;
     _onDetailsPaneRouteChanged = onDetailsPaneRouteChanged;
@@ -35,14 +35,14 @@ class MasterDetailRouteObserver extends RouteObserver<PageRoute<dynamic>> {
 
   static String? _detailsRoute;
 
-  static late DetailsPaneRouteChangedCallback _onDetailsPaneRouteChanged;
+  static late DetailsPaneRouteChangedCallback? _onDetailsPaneRouteChanged;
 
   @override
   void didPop(Route route, Route? previousRoute) {
     super.didPop(route, previousRoute);
     if (previousRoute!.settings.name!.toLowerCase() ==
         _initialRoute!.toLowerCase()) {
-      _onDetailsPaneRouteChanged(_initialRoute, null);
+      _onDetailsPaneRouteChanged?.call(_initialRoute, null);
       return;
     }
     _triggerDetailsChangedCallback(previousRoute);
@@ -67,7 +67,7 @@ class MasterDetailRouteObserver extends RouteObserver<PageRoute<dynamic>> {
 
     final Uri uri = Uri.parse(route.settings.name!);
     if (uri.path.toLowerCase() == _detailsRoute!.toLowerCase()) {
-      _onDetailsPaneRouteChanged(_detailsRoute, uri.queryParameters);
+      _onDetailsPaneRouteChanged?.call(_detailsRoute, uri.queryParameters);
     }
   }
 }
