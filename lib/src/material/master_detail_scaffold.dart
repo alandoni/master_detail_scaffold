@@ -9,12 +9,12 @@ class MasterDetailScaffold extends StatefulWidget {
   const MasterDetailScaffold(
       {required this.masterPaneBuilder,
       required this.masterPaneWidth,
-      required this.detailsAppBar,
+      this.detailsAppBar,
       required this.detailsPaneBuilder,
-      required this.initialAppBar,
+      required this.appBar,
       required this.initialRoute,
       required this.detailsRoute,
-      required this.onDetailsPaneRouteChanged,
+      this.onDetailsPaneRouteChanged,
       this.initialDetailsPaneBuilder,
       this.twoPanesWidthBreakpoint,
       this.pageRouteBuilder,
@@ -40,10 +40,10 @@ class MasterDetailScaffold extends StatefulWidget {
 
   /// The app bar to show when the both the master and details pane are visible.
   /// If only one pane is visible, this the app bar that is shown when it's the master pane that is visible i.e. when on the [initialRoute] as the user has selected an item yet
-  final PreferredSizeWidget initialAppBar;
+  final PreferredSizeWidget appBar;
 
   /// The app bar to shown when only the details pane is visible i.e. when on the [detailsRoute] after the user has selected an item.
-  final PreferredSizeWidget detailsAppBar;
+  final PreferredSizeWidget? detailsAppBar;
 
   /// The name of the initial route. When the instance of the [Navigator] associated with the [MasterDetails]
   final String initialRoute;
@@ -118,7 +118,7 @@ class MasterDetailScaffold extends StatefulWidget {
   ///
   /// The route and query string parameters will be through the callback can then be used to update the state of the application.
   /// The information can be used to determine what content should be shown in the details pane.
-  final DetailsPaneRouteChangedCallback onDetailsPaneRouteChanged;
+  final DetailsPaneRouteChangedCallback? onDetailsPaneRouteChanged;
 
   /// Function that creates a modal route that can be used determine what the transition should be when navigation occurs.
   /// If left as null, then the [MaterialMasterDetailPageRoute] is used as a default
@@ -167,7 +167,7 @@ class MasterDetailScaffoldState extends State<MasterDetailScaffold> {
           builder = (BuildContext context) => !LayoutHelper.showBothPanes(
                   context, widget.twoPanesWidthBreakpoint!)
               ? Scaffold(
-                  appBar: widget.initialAppBar,
+                  appBar: null,
                   body: Builder(builder: widget.masterPaneBuilder),
                   persistentFooterButtons: widget.persistentFooterButtons,
                   drawer: widget.drawer,
@@ -221,7 +221,7 @@ class MasterDetailScaffoldState extends State<MasterDetailScaffold> {
     final Widget content = LayoutHelper.showBothPanes(
             context, widget.twoPanesWidthBreakpoint!)
         ? Scaffold(
-            appBar: widget.initialAppBar,
+            appBar: widget.appBar,
             body: Row(
               children: [
                 Container(
