@@ -11,12 +11,12 @@ class MasterDetailScaffold extends StatefulWidget {
       required this.masterPaneWidth,
       this.detailsAppBar,
       required this.detailsPaneBuilder,
-      required this.appBar,
+      this.appBar,
       required this.initialRoute,
       required this.detailsRoute,
       this.onDetailsPaneRouteChanged,
       this.initialDetailsPaneBuilder,
-      this.twoPanesWidthBreakpoint,
+      required this.twoPanesWidthBreakpoint,
       this.pageRouteBuilder,
       this.floatingActionButton,
       this.floatingActionButtonLocation,
@@ -40,7 +40,7 @@ class MasterDetailScaffold extends StatefulWidget {
 
   /// The app bar to show when the both the master and details pane are visible.
   /// If only one pane is visible, this the app bar that is shown when it's the master pane that is visible i.e. when on the [initialRoute] as the user has selected an item yet
-  final PreferredSizeWidget appBar;
+  final PreferredSizeWidget? appBar;
 
   /// The app bar to shown when only the details pane is visible i.e. when on the [detailsRoute] after the user has selected an item.
   final PreferredSizeWidget? detailsAppBar;
@@ -69,7 +69,7 @@ class MasterDetailScaffold extends StatefulWidget {
   final double masterPaneWidth;
 
   /// The minimum width at which both the master and details pane will be shown
-  final double? twoPanesWidthBreakpoint;
+  final double twoPanesWidthBreakpoint;
 
   /// Creates the widget to show when both the master and details pane are visible but there aren't any details to show.
   /// If null, then defaults to showing a [Container].
@@ -141,7 +141,7 @@ class MasterDetailScaffold extends StatefulWidget {
 class MasterDetailScaffoldState extends State<MasterDetailScaffold> {
   /// Whether both the master and detail panes are both being displayed
   bool get isDisplayingBothPanes =>
-      LayoutHelper.showBothPanes(context, widget.twoPanesWidthBreakpoint!);
+      LayoutHelper.showBothPanes(context, widget.twoPanesWidthBreakpoint);
 
   /// The navigator widget that encloses the details pane.
   /// Use this change the route that determines that details of the item that needs to be shown
@@ -164,8 +164,7 @@ class MasterDetailScaffoldState extends State<MasterDetailScaffold> {
         WidgetBuilder? builder;
         final Uri uri = Uri.parse(settings.name!);
         if (settings.name!.toLowerCase() == widget.initialRoute.toLowerCase()) {
-          builder = (BuildContext context) => !LayoutHelper.showBothPanes(
-                  context, widget.twoPanesWidthBreakpoint!)
+          builder = (BuildContext context) => !LayoutHelper.showBothPanes(context, widget.twoPanesWidthBreakpoint)
               ? Scaffold(
                   appBar: null,
                   body: Builder(builder: widget.masterPaneBuilder),
@@ -185,12 +184,9 @@ class MasterDetailScaffoldState extends State<MasterDetailScaffold> {
               : widget.initialDetailsPaneBuilder == null
                   ? Container()
                   : Builder(builder: widget.initialDetailsPaneBuilder!);
-        } else if (uri.path.toLowerCase() ==
-            widget.detailsRoute.toLowerCase()) {
-          final Builder detailsPane =
-              Builder(builder: widget.detailsPaneBuilder);
-          builder = (BuildContext context) => !LayoutHelper.showBothPanes(
-                  context, widget.twoPanesWidthBreakpoint!)
+        } else if (uri.path.toLowerCase() == widget.detailsRoute.toLowerCase()) {
+          final Builder detailsPane = Builder(builder: widget.detailsPaneBuilder);
+          builder = (BuildContext context) => !LayoutHelper.showBothPanes(context, widget.twoPanesWidthBreakpoint)
               ? Scaffold(
                   appBar: widget.detailsAppBar,
                   body: detailsPane,
@@ -219,7 +215,7 @@ class MasterDetailScaffoldState extends State<MasterDetailScaffold> {
       },
     );
     final Widget content = LayoutHelper.showBothPanes(
-            context, widget.twoPanesWidthBreakpoint!)
+            context, widget.twoPanesWidthBreakpoint)
         ? Scaffold(
             appBar: widget.appBar,
             body: Row(
